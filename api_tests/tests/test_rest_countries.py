@@ -221,7 +221,7 @@ VALID_ALPHA_CODES = [
     ("GBR", "United Kingdom"),   # alpha-3 code
 ]
 
-INVALID_ALPHA_CODES = ["ZZ", "XX", "000", "AAAA"]
+INVALID_ALPHA_CODES = ["ZZ", "XX", "000", "QQQ"]
 
 
 class TestGetCountryByAlphaCode:

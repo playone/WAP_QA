@@ -13,6 +13,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 from config.mobile_profiles import MOBILE_PROFILES, DEFAULT_MOBILE_PROFILE
 
@@ -59,7 +60,10 @@ def mobile_driver(request):
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--window-size=390,844")
 
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=chrome_options,
+    )
     driver.implicitly_wait(0)  # rely on explicit waits only in BasePage
 
     yield driver

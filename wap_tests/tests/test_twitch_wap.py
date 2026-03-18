@@ -4,12 +4,13 @@ WAP test suite — Twitch mobile (Google Chrome emulation).
 Test flow
 ---------
 1. Open https://www.twitch.tv in a Chrome mobile emulated browser.
-2. Click the search icon.
-3. Type "StarCraft II" and submit.
-4. Scroll down 2 times.
-5. Select the first available streamer.
-6. Wait for the stream page to fully load (handle pop-ups).
-7. Take a screenshot as evidence.
+2. Click the page body to focus the viewport.
+3. Click the search icon.
+4. Type "StarCraft II" and submit.
+5. Scroll down 2 times.
+6. Select the first available streamer.
+7. Wait for the stream page to fully load (handle pop-ups).
+8. Take a screenshot as evidence.
 """
 
 import os
@@ -33,14 +34,13 @@ class TestTwitchWAP:
 
         Steps
         -----
-        1. Navigate to https://www.twitch.tv
-        2. Click the search icon
-        3. Search for "StarCraft II"
-        4. Scroll down 2 times
-        5. Click the first streamer card
-        6. Handle any pop-ups / mature-content gate
-        7. Wait for the video player to load
-        8. Take a screenshot
+        1. Open Twitch mobile
+        2. Click the page body to focus the viewport
+        3. Click the search icon
+        4. Type "StarCraft II"
+        5. Scroll ×2
+        6. Select one streamer
+        7. On the streamer page wait until all is loaded and take a screenshot
 
         Expected result
         ---------------
@@ -48,27 +48,25 @@ class TestTwitchWAP:
         * The video player element is present in the DOM.
         * A screenshot file is saved to the screenshots/ directory.
         """
-        # Step 1: Load Twitch homepage and dismiss banners
+        # Step 1: Open Twitch mobile and dismiss banners
         home = HomePage(mobile_driver)
         home.load()
 
-        # Step 2: Open search
+        # Steps 2-3: Focus viewport then open search
         home.click_search()
 
-        # Steps 3-4: Type query and scroll through results
+        # Steps 4-5: Type query and scroll through results
         search = SearchPage(mobile_driver)
         search.search(TWITCH_SEARCH_QUERY)
         search.scroll_results(times=SCROLL_DOWN_COUNT)
 
-        # Step 5: Select first streamer
+        # Step 6: Select one streamer
         channel_href = search.select_first_streamer()
 
-        # Steps 6-7: Handle pop-ups and wait for player
+        # Step 7: On the streamer page wait until all is loaded and take a screenshot
         streamer = StreamerPage(mobile_driver)
         streamer.handle_popups()
         streamer.wait_for_player()
-
-        # Step 8: Screenshot
         screenshot_path = streamer.capture_screenshot("tc_wap_001_starcraft")
 
         # --- Assertions ---
@@ -94,9 +92,10 @@ class TestTwitchWAP:
         Steps
         -----
         1. Navigate to Twitch
-        2. Open search
-        3. Type "StarCraft II"
-        4. Scroll down 2 times
+        2. Click the page body to focus the viewport
+        3. Click the search icon
+        4. Type "StarCraft II"
+        5. Scroll down 2 times
 
         Expected result
         ---------------
@@ -110,11 +109,8 @@ class TestTwitchWAP:
         search.search(TWITCH_SEARCH_QUERY)
         search.scroll_results(times=SCROLL_DOWN_COUNT)
 
-        from selenium.webdriver.common.by import By
-        cards = mobile_driver.find_elements(
-            By.CSS_SELECTOR, 'a[data-a-target="preview-card-image-link"]'
-        )
-        assert len(cards) > 0, (
+        card_count = search.get_card_count()
+        assert card_count > 0, (
             "No stream cards found after searching for StarCraft II."
         )
 
@@ -128,7 +124,7 @@ class TestTwitchWAP:
 
         Steps
         -----
-        1-6: Same as TC-WAP-001
+        1-7: Same as TC-WAP-001 steps 1-7
 
         Expected result
         ---------------

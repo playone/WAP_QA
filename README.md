@@ -140,9 +140,9 @@ pytest --html=reports/report.html --self-contained-html
 
 | ID | Title | Steps | Expected Result |
 |----|-------|-------|-----------------|
-| TC-WAP-001 | Search StarCraft II and open streamer | 1. Open Twitch mobile · 2. Click search icon · 3. Type "StarCraft II" · 4. Scroll ×2 · 5. Click first card · 6. Handle pop-ups · 7. Wait for player · 8. Screenshot | URL is a channel page (not /search); video player present; screenshot saved |
-| TC-WAP-002 | Search results not empty | Steps 1–4 of TC-WAP-001 | ≥1 stream card visible after search + scroll |
-| TC-WAP-003 | Pop-up handler robustness | Steps 1–6 of TC-WAP-001 | `handle_popups()` completes without exception; screenshot saved |
+| TC-WAP-001 | Search StarCraft II and open streamer | 1. Open Twitch mobile · 2. Click page body · 3. Click search icon · 4. Type "StarCraft II" · 5. Scroll ×2 · 6. Select one streamer · 7. On the streamer page wait until all is loaded and take a screenshot | URL is a channel page (not /search); screenshot saved |
+| TC-WAP-002 | Search results not empty | Steps 1–5 of TC-WAP-001 | ≥1 stream card visible after search + scroll |
+| TC-WAP-003 | Pop-up handler robustness | Steps 1–7 of TC-WAP-001 | `handle_popups()` completes without exception; screenshot saved |
 
 ---
 
